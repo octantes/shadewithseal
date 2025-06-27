@@ -1,8 +1,8 @@
 <script setup>
 
-import botonCanvasRetroceder from './botones/botonCanvasRetroceder.vue'
-import botonCanvasReproduccion from './botones/botonCanvasReproduccion.vue'
-import botonCanvasAvanzar from './botones/botonCanvasAvanzar.vue'
+import botonCanvasRetroceder from './botonCanvasRetroceder.vue'
+import botonCanvasReproduccion from './botonCanvasReproduccion.vue'
+import botonCanvasAvanzar from './botonCanvasAvanzar.vue'
 import { defineEmits } from 'vue'
 
 const emit = defineEmits(['clickRetroceder', 'clickReproduccion' ,'clickAvanzar'])

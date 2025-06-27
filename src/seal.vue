@@ -1,12 +1,16 @@
 <script setup>
 
-import botones from './components/botones.vue'
+import vistaCanvas from './components/vistaCanvas.vue'
+import vistaBiblioteca from './components/vistaBiblioteca.vue'
 
 </script>
 
 <template>
   <div class="seal">
-    <botones @clickRetroceder="" @clickReproduccion="" @clickAvanzar="" />
+    <div class="columna">
+      <vistaCanvas />
+      <vistaBiblioteca />
+    </div>
   </div>
 </template>
 
