@@ -1,0 +1,42 @@
+*, *::before, *::after
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+html, body {
+  height: 100%;
+  line-height: 1;
+  font-family: sans-serif;
+  color: inherit;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary { display: block; }
+ol, ul { list-style: none; }
+blockquote, q { quotes: none; }
+blockquote::before, blockquote::after, q::before, q::after { content: ''; content: none; }
+table { border-collapse: collapse; border-spacing: 0; }
+a { text-decoration: none; color: inherit; }
+
+button, input, select, textarea
+{
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  resize: none;
+}
+
+button { cursor: pointer; }
+hr { border: none; border-top: 1px solid #ccc; margin: 1em 0; }
+img { max-width: 100%; height: auto; display: block; }
