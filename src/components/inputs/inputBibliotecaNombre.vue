@@ -3,32 +3,21 @@
 import { defineEmits } from 'vue'
 
 const emit = defineEmits(['update:modelValue', 'input', 'change'])
-
 const props = defineProps({
   modelValue: { type: String, default: ''},
   placeholder: { type: String, default: 'Write here'},
-  disabled: Boolean,
 })
 
 function onInput(evento) {
-  const val = evento.target.value
-  emit('update:modelValue', val)
-  emit('input', val)
-}
-
-function onChange(evento) {
-  const val = evento.target.value
-  emit('change', val)
+  emit('update:modelValue', evento.target.value)
 }
 </script>
 
 <template>
-  <input class="input" name="inputNombre" type="text"
+  <input type="text" class="input"
     :value="modelValue"
     :placeholder="placeholder"
-    :disabled="disabled"
     @input="onInput"
-    @change="onChange"
   />
 </template>
 
