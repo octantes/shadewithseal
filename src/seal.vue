@@ -1,11 +1,12 @@
 <script setup>
-import botonReproduccion from './components/botones/botonReproduccion.vue'
+
+import botones from './components/botones.vue'
 
 </script>
 
 <template>
   <div class="seal">
-    <botonReproduccion />
+    <botones @clickRetroceder="" @clickReproduccion="" @clickAvanzar="" />
   </div>
 </template>
 
