@@ -1,22 +1,26 @@
 .columna { display: flex ; flex-direction: column; gap: 1rem}
-.fila { display: flex ; flex-direction: row; gap: 1rem}
+.fila { display: flex; flex-direction: row; gap: 1rem}
 
-/* botones de biblioteca */
+/* botones chicos */
 
-.botonBibliotecaIcono { width: 2rem; height: 2rem; color: #d8dade; }
+.botonChicoIcono { width: 2rem; height: 2rem; color: #d8dade; }
 
-.botonBiblioteca { width: 4.5rem; height: 4.5rem; background-color: #1b1c1c; }
-.botonBiblioteca:hover { background: #3c3c3c; }
-.botonBiblioteca:active { transform: scale(0.95); }
+.botonChico { width: 4.5rem; height: 4.5rem; background-color: #1b1c1c; }
+.botonChico:hover { background: #3c3c3c; }
+.botonChico:active { transform: scale(0.95); }
+
+.botonChicoVariable { flex: 1 1 auto;  height: 4.5rem; background-color: #1b1c1c; }
+.botonChicoVariable:hover { background: #3c3c3c; }
+.botonChicoVariable:active { transform: scale(0.98); }
 
 /* botones de reproduccion */
 
-.botonCanvasIcono { width: 5rem; height: 5rem; color: #d8dade; }
+.botonGrandeIcono { width: 5rem; height: 5rem; color: #d8dade; }
 
-.botonCanvas { width: 10rem; height: 10rem; background-color: #1b1c1c; }
-.botonCanvas:hover { background: #3c3c3c; }
-.botonCanvas:active { transform: scale(0.95); }
+.botonGrande { width: 10rem; height: 10rem; background-color: #1b1c1c; }
+.botonGrande:hover { background: #3c3c3c; }
+.botonGrande:active { transform: scale(0.95); }
 
-.botonCanvasVariable { flex: 1 1 auto;  height: 10rem; background-color: #1b1c1c; }
-.botonCanvasVariable:hover { background: #3c3c3c; }
-.botonCanvasVariable:active { transform: scale(0.98); }
+.botonGrandeVariable { flex: 1 1 auto;  height: 10rem; background-color: #1b1c1c; }
+.botonGrandeVariable:hover { background: #3c3c3c; }
+.botonGrandeVariable:active { transform: scale(0.98); }

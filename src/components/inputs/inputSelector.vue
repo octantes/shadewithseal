@@ -7,7 +7,6 @@ const props = defineProps({
   opciones: { type: Array, default: () => [] },
   placeholder: { type: String, default: 'Select' }
 })
-
 const emit = defineEmits(['update:modelValue'])
 const valor = computed({
   get() {
@@ -20,7 +19,7 @@ const valor = computed({
 </script>
 
 <template>
-  <div class="inputWrapper">
+  <div class="wrapper">
     <select class="input" v-model="valor">
       <option disabled value="">{{ placeholder }}</option>
       <option v-for="opcion in opciones" :key="opcion" :value="opcion">{{ opcion }}</option>
@@ -41,12 +40,10 @@ const valor = computed({
   border: none;
   appearance: none;
 }
-
-.inputWrapper {
+.wrapper {
   position: relative;
   display: inline-block;
 }
-
 .arrow {
   position: absolute;
   right: 1rem;

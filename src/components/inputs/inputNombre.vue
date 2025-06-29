@@ -1,5 +1,4 @@
 <script setup>
-
 import { defineEmits } from 'vue'
 
 const emit = defineEmits(['update:modelValue', 'input', 'change'])
@@ -14,11 +13,7 @@ function onInput(evento) {
 </script>
 
 <template>
-  <input type="text" class="input"
-    :value="modelValue"
-    :placeholder="placeholder"
-    @input="onInput"
-  />
+  <input type="text" class="input" :value="modelValue" :placeholder="placeholder" @input="onInput" />
 </template>
 
 <style scoped>

@@ -1,5 +1,5 @@
 import './reset.css'
-import './indexed.js'
+import './components/indexed.js'
 import './components/estilos.css'
 import { createApp } from 'vue'
 import seal from './seal.vue'
