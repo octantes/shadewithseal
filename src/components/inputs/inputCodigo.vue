@@ -19,9 +19,10 @@ function onInput(e) {
 <style scoped>
 .input {
   width: 100%;
-  min-height: 200px;
+  height: 100%;
+  min-height: 1rem;
   font-family: monospace;
-  font-size: 14px;
+  font-size: 1rem;
   background: #111;
   color: #d8dade;
   border: 1px solid #333;

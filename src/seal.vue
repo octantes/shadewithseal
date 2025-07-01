@@ -1,8 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import vistaBiblioteca from './components/vistas/vistaBiblioteca.vue'
-import shaderCanvas from './components/vistas/shaderCanvas.vue'
-import inputCodigo from './components/inputs/inputCodigo.vue'
+import shaderCanvas from './components/shader/shaderCanvas.vue'
 
 const codigoActual = ref('')
 
@@ -12,9 +11,8 @@ const codigoActual = ref('')
 
   <div class="seal">
 
-      <shaderCanvas :codigo="codigoActual" />
-      <inputCodigo v-model="codigoActual" />
-      <vistaBiblioteca :codigo="codigoActual" />
+    <shaderCanvas :codigo="codigoActual" />
+    <vistaBiblioteca v-model:codigo="codigoActual" />
 
   </div>
 

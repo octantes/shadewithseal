@@ -10,7 +10,7 @@
   overflow: hidden;
 }
 
-.columna { display: flex ; flex-direction: column; gap: 1rem}
+.columna { display: flex ; flex-direction: column; gap: 1rem; height: 100%; width: fit-content; }
 .fila { display: flex; flex-direction: row; gap: 1rem}
 
 /* botones chicos */
@@ -25,19 +25,7 @@
 .botonChicoVariable:hover { background: #3c3c3c; }
 .botonChicoVariable:active { transform: scale(0.98); }
 
-/* botones de reproduccion */
-
-.botonGrandeIcono { width: 5rem; height: 5rem; color: #d8dade; }
-
-.botonGrande { width: 10rem; height: 10rem; background-color: #1b1c1c; }
-.botonGrande:hover { background: #3c3c3c; }
-.botonGrande:active { transform: scale(0.95); }
-
-.botonGrandeVariable { flex: 1 1 auto;  height: 10rem; background-color: #1b1c1c; }
-.botonGrandeVariable:hover { background: #3c3c3c; }
-.botonGrandeVariable:active { transform: scale(0.98); }
-
 /**/
 
-.biblioteca { display: flex ; flex-direction: column; background: #1b1c1c; color: #d8dade; padding: 1em; gap: 1em; }
+.biblioteca { width: auto; display: flex ; flex-direction: column; background: #1b1c1c; color: #d8dade; padding: 1em; gap: 1em; }
 .shader { width: 50rem; height: 50rem; padding: 1rem; }

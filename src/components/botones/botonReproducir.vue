@@ -10,7 +10,7 @@ function manejarClick() {
 </script>
 
 <template>
-  <button title="Play/Pause shader execution" type="button" class="botonGrandeVariable" @click="manejarClick" >
-    <component :is="reproduciendo ? PauseIcon : PlayIcon" class="botonGrandeIcono" />
+  <button title="Play/Pause shader execution" type="button" class="botonChico" @click="manejarClick" >
+    <component :is="reproduciendo ? PauseIcon : PlayIcon" class="botonChicoIcono" />
   </button>
 </template>

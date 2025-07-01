@@ -5,7 +5,7 @@ const emit = defineEmits(['clickAvanzar'])
 </script>
 
 <template>
-  <button title="Next shader on the list" type="button" class="botonGrande" @click="emit('clickAvanzar')" >
-    <ForwardIcon class="botonGrandeIcono" />
+  <button title="Next shader on the list" type="button" class="botonChico" @click="emit('clickAvanzar')" >
+    <ForwardIcon class="botonChicoIcono" />
   </button>
 </template>

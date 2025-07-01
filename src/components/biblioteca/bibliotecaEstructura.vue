@@ -34,7 +34,7 @@ onMounted(async () => {
 
       <div v-if="carpeta.abierta">
         <div class="cosa" v-for="archivo in carpeta.archivos" :key="carpeta.nombre + '/' + archivo">
-          <span class="etiqueta">{{ '- ' + archivo }}</span>
+          <span class="etiqueta">{{ '¬ ' + archivo }}</span>
         </div>
       </div>
       
