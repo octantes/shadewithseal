@@ -4,28 +4,33 @@
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  background: #d8dade;
-  padding: 1rem;
-  gap: 1rem;
+  background: #2b2c2c;
+  padding: .5rem;
+  gap: .5rem;
   overflow: hidden;
 }
 
-.columna { display: flex ; flex-direction: column; gap: 1rem; height: 100%; width: fit-content; }
-.fila { display: flex; flex-direction: row; gap: 1rem}
+@media (orientation: landscape) {
+  .seal {
+    flex-direction: row;
+  }
+}
 
-/* botones chicos */
+.columna { display: flex ; flex-direction: column; gap: .5rem; height: 100%; width: 100%; }
+.fila { display: flex; flex-direction: row; gap: .5rem}
 
-.botonChicoIcono { width: 2rem; height: 2rem; color: #d8dade; }
+/* botones */
 
-.botonChico { width: 4.5rem; height: 4.5rem; background-color: #1b1c1c; }
-.botonChico:hover { background: #3c3c3c; }
-.botonChico:active { transform: scale(0.95); }
+.botonIcono { width: 1rem; height: 1rem; color: #d8dade; }
 
-.botonChicoVariable { flex: 1 1 auto;  height: 4.5rem; background-color: #1b1c1c; }
-.botonChicoVariable:hover { background: #3c3c3c; }
-.botonChicoVariable:active { transform: scale(0.98); }
+.boton { width: 2rem; height: 2rem; background-color: #1b1c1c; }
+.boton:hover { background: #3c3c3c; }
+.boton:active { transform: scale(0.95); }
+
+.botonVariable { flex: 1 1 auto;  height: 2rem; background-color: #1b1c1c; }
+.botonVariable:hover { background: #3c3c3c; }
+.botonVariable:active { transform: scale(0.98); }
 
 /**/
 
-.biblioteca { width: auto; display: flex ; flex-direction: column; background: #1b1c1c; color: #d8dade; padding: 1em; gap: 1em; }
 .shader { width: 50rem; height: 50rem; padding: 1rem; }

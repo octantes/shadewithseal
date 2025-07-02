@@ -1,3 +1,3 @@
-1. hacer que detecte aspect ratio horizontal o vertical y distribuya en columna o fila canvas + bibliotecas
-2. agregar funcionalidad de edicion y eliminar columnas de idx
 3. agregar ffmpeg y botones de reproduccion + grabacion
+4. componente para errores error.value de shader + cambiar resto de errores o warns a alertas de browser
+5. confirmar antes de eliminar componentes

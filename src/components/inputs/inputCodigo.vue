@@ -20,7 +20,6 @@ function onInput(e) {
 .input {
   width: 100%;
   height: 100%;
-  min-height: 1rem;
   font-family: monospace;
   font-size: 1rem;
   background: #111;

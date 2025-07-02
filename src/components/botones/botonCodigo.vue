@@ -5,7 +5,7 @@ const emit = defineEmits(['clickCodigo'])
 </script>
 
 <template>
-  <button title="Code your shader" type="button" class="botonChico" @click="emit('clickCodigo')" >
-    <CodeBracketIcon class="botonChicoIcono" />
+  <button title="Code your shader" type="button" class="boton" @click="emit('clickCodigo')" >
+    <CodeBracketIcon class="botonIcono" />
   </button>
 </template>

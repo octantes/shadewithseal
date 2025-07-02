@@ -30,16 +30,16 @@ const valor = computed({
 
 <style scoped>
 .input {
-  width: auto;
-  height: 4.5rem;
-  flex-grow: 1;
+  width: 100%;
+  min-height: 2rem;
   color: #d8dade;
   background-color: #1b1c1c;
-  font-size: 2.5rem;
-  padding: 1rem;
+  font-size: 1rem;
+  padding: 0.25rem 2rem 0.25rem 0.5rem;
   border: none;
   appearance: none;
 }
+
 .wrapper {
   position: relative;
   display: inline-block;
@@ -49,8 +49,8 @@ const valor = computed({
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1rem;
+  height: 1rem;
   color: #d8dade;
   pointer-events: none;
 }

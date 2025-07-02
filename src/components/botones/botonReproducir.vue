@@ -1,16 +1,12 @@
 <script setup>
 import { PlayIcon, PauseIcon } from '@heroicons/vue/24/solid'
-import { ref, defineEmits } from 'vue'
+import { defineProps, defineEmits } from 'vue'
+const props = defineProps({ activo: Boolean })
 const emit = defineEmits(['clickReproducir'])
-const reproduciendo = ref(false);
-function manejarClick() {
-  reproduciendo.value = !reproduciendo.value
-  emit('clickReproducir')
-}
 </script>
 
 <template>
-  <button title="Play/Pause shader execution" type="button" class="botonChico" @click="manejarClick" >
-    <component :is="reproduciendo ? PauseIcon : PlayIcon" class="botonChicoIcono" />
+  <button title="Play/Pause shader execution" type="button" class="boton" @click="emit('clickReproducir')" >
+    <component :is="activo ? PauseIcon : PlayIcon" class="botonIcono" />
   </button>
 </template>

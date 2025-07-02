@@ -5,7 +5,7 @@ const emit = defineEmits(['clickGuardar'])
 </script>
 
 <template>
-  <button title="Save your shader" type="button" class="botonChico" @click="emit('clickGuardar')" >
-    <FolderOpenIcon class="botonChicoIcono" />
+  <button title="Save your shader" type="button" class="boton" @click="emit('clickGuardar')" >
+    <FolderOpenIcon class="botonIcono" />
   </button>
 </template>

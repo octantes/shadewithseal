@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import vistaBiblioteca from './components/vistas/vistaBiblioteca.vue'
-import shaderCanvas from './components/shader/shaderCanvas.vue'
+import vistaShader from './components/vistas/vistaShader.vue'
 
 const codigoActual = ref('')
+const reproduciendo = ref(false)
 
 </script>
 
@@ -11,8 +12,8 @@ const codigoActual = ref('')
 
   <div class="seal">
 
-    <shaderCanvas :codigo="codigoActual" />
-    <vistaBiblioteca v-model:codigo="codigoActual" />
+    <vistaShader :codigo="codigoActual" :reproduciendo="reproduciendo" />
+    <vistaBiblioteca v-model:codigo="codigoActual" @reproduccion="reproduciendo = $event" />
 
   </div>
 

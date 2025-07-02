@@ -10,7 +10,7 @@ function manejarClick() {
 </script>
 
 <template>
-  <button title="Play/End shader recording" type="button" class="botonChico" @click="manejarClick" >
-    <component :is="grabando ? PauseCircleIcon : PlayCircleIcon" class="botonChicoIcono" />
+  <button title="Play/End shader recording" type="button" class="boton" @click="manejarClick" >
+    <component :is="grabando ? PauseCircleIcon : PlayCircleIcon" class="botonIcono" />
   </button>
 </template>

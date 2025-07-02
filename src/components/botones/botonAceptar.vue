@@ -5,7 +5,7 @@ const emit = defineEmits(['clickAceptar'])
 </script>
 
 <template>
-  <button title="Apply changes" type="button" class="botonChico" @click="emit('clickAceptar')" >
-    <CheckIcon class="botonChicoIcono" />
+  <button title="Apply changes" type="button" class="boton" @click="emit('clickAceptar')" >
+    <CheckIcon class="botonIcono" />
   </button>
 </template>

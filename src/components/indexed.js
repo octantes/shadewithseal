@@ -1,31 +1,88 @@
 import { openDB } from 'idb'
 
-const dbPromise = openDB('sealDB', 1, {
-  upgrade(db) {
-    if(!db.objectStoreNames.contains('carpetas')) {
-      db.createObjectStore('carpetas', { keyPath: 'nombre' })
+const dbPromise = openDB('sealDB', 2, {
+  upgrade(db, oldVersion) {
+    if (!db.objectStoreNames.contains('carpetas')) {
+      const carpetas = db.createObjectStore('carpetas', { keyPath: 'id' })
+      carpetas.createIndex('porNombre', 'nombre', { unique: true })
+    } else {
+      const tx = db.transaction('carpetas', 'versionchange')
+      const store = tx.objectStore('carpetas')
+      if (!store.indexNames.contains('porNombre')) {
+        store.createIndex('porNombre', 'nombre', { unique: true })
+      }
     }
-    if(!db.objectStoreNames.contains('archivos')) {
-      db.createObjectStore('archivos', { keyPath: 'id' }).createIndex('porCarpeta', 'carpeta')
+
+    if (!db.objectStoreNames.contains('archivos')) {
+      const archivos = db.createObjectStore('archivos', { keyPath: 'id' })
+      archivos.createIndex('porCarpeta', 'carpeta')
+    } else {
+      const tx = db.transaction('archivos', 'versionchange')
+      const store = tx.objectStore('archivos')
+      if (!store.indexNames.contains('porCarpeta')) {
+        store.createIndex('porCarpeta', 'carpeta')
+      }
     }
   }
 })
 
-export async function crearCarpeta(nombre) {
-  const db = await dbPromise
-  return db.put('carpetas', { nombre, creada: Date.now() })
+// helpers
+function generarId() {
+  return crypto.randomUUID()
 }
 
-export async function crearArchivo( { carpeta, nombre, codigo } ) {
+// carpetas
+export async function crearCarpeta(nombre) {
+  const db = await dbPromise
+  const existe = await db.getFromIndex('carpetas', 'porNombre', nombre)
+  if (existe) throw new Error('ya existe una carpeta con ese nombre')
+
+  const nueva = { id: generarId(), nombre, creada: Date.now() }
+  await db.add('carpetas', nueva)
+  return nueva
+}
+
+export async function obtenerCarpetas() {
+  const db = await dbPromise
+  return db.getAll('carpetas')
+}
+
+export async function eliminarCarpeta(nombre) {
+  const db = await dbPromise
+  const carpeta = await db.getFromIndex('carpetas', 'porNombre', nombre)
+  if (!carpeta) throw new Error('carpeta no encontrada')
+
+  const archivos = await obtenerArchivosPorCarpeta(nombre)
+  const tx = db.transaction(['carpetas', 'archivos'], 'readwrite')
+  const carpetasStore = tx.objectStore('carpetas')
+  const archivosStore = tx.objectStore('archivos')
+
+  for (const archivo of archivos) {
+    archivosStore.delete(archivo.id)
+  }
+
+  carpetasStore.delete(carpeta.id)
+  await tx.done
+}
+
+
+// archivos
+export async function crearArchivo({ carpeta, nombre, codigo }) {
   const db = await dbPromise
   const id = `${carpeta}/${nombre}`
-  return db.put('archivos', {
+  const existe = await db.get('archivos', id)
+  if (existe) throw new Error('ya existe un archivo con ese nombre en la carpeta')
+
+  const archivo = {
     id,
     nombre,
     carpeta,
     codigo,
     creado: Date.now()
-  })
+  }
+
+  await db.add('archivos', archivo)
+  return archivo
 }
 
 export async function obtenerArchivosPorCarpeta(carpeta) {
@@ -35,7 +92,58 @@ export async function obtenerArchivosPorCarpeta(carpeta) {
   return index.getAll(carpeta)
 }
 
-export async function obtenerCarpetas() {
+export async function eliminarArchivo(id) {
   const db = await dbPromise
-  return db.getAll('carpetas')
+  return db.delete('archivos', id)
+}
+
+export async function renombrarCarpeta(nombreViejo, nombreNuevo) {
+  const db = await dbPromise;
+  // busco la carpeta original por índice
+  const carpeta = await db.getFromIndex('carpetas', 'porNombre', nombreViejo);
+  if (!carpeta) throw new Error('carpeta no encontrada');
+  // chequeo que no exista ya la nueva
+  const existe = await db.getFromIndex('carpetas', 'porNombre', nombreNuevo);
+  if (existe) throw new Error('ya existe una carpeta con ese nombre');
+
+  // traigo todos los archivos de la carpeta vieja
+  const archivos = await obtenerArchivosPorCarpeta(nombreViejo);
+  // inicio tx en ambos object stores
+  const tx = db.transaction(['carpetas', 'archivos'], 'readwrite');
+  const carpetasStore = tx.objectStore('carpetas');
+  const archivosStore  = tx.objectStore('archivos');
+
+  // borro la carpeta vieja y agrego la nueva con el nombre actualizado
+  carpetasStore.delete(carpeta.id);
+  carpetasStore.add({ 
+    ...carpeta, 
+    nombre: nombreNuevo, 
+    creada: Date.now() 
+  });
+
+  // para cada archivo, cambio su id (que es carpeta/nombre) y carpeta
+  for (const archivo of archivos) {
+    const nuevoId = `${nombreNuevo}/${archivo.nombre}`;
+    archivosStore.delete(archivo.id);
+    archivosStore.add({
+      ...archivo,
+      id: nuevoId,
+      carpeta: nombreNuevo
+    });
+  }
+
+  await tx.done;
+}
+
+export async function renombrarArchivo(idViejo, nombreNuevo) {
+  const db = await dbPromise
+  const archivo = await db.get('archivos', idViejo)
+  if (!archivo) throw new Error('archivo no encontrado')
+
+  const nuevoId = `${archivo.carpeta}/${nombreNuevo}`
+  const yaExiste = await db.get('archivos', nuevoId)
+  if (yaExiste) throw new Error('ya existe un archivo con ese nombre')
+
+  await db.delete('archivos', idViejo)
+  return db.add('archivos', { ...archivo, nombre: nombreNuevo, id: nuevoId })
 }

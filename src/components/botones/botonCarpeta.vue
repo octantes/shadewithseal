@@ -5,7 +5,7 @@ const emit = defineEmits(['clickCarpeta'])
 </script>
 
 <template>
-  <button title="Create a new folder" type="button" class="botonChico" @click="emit('clickCarpeta')" >
-    <FolderPlusIcon class="botonChicoIcono" />
+  <button title="Create a new folder" type="button" class="boton" @click="emit('clickCarpeta')" >
+    <FolderPlusIcon class="botonIcono" />
   </button>
 </template>
