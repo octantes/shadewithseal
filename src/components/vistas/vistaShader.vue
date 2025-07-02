@@ -1,11 +1,12 @@
 <script setup>
-import { onMounted, onBeforeUnmount, watch, ref } from 'vue'
+import { onMounted, onBeforeUnmount, watch, ref, defineExpose } from 'vue'
 import {
   prepararPrograma,
   iniciarRenderLoop,
   detenerRenderLoop,
   resizeCanvas,
 } from '../webgl.js'
+
 
 const placeholderShader = `
 #ifdef GL_ES
@@ -27,9 +28,10 @@ const props = defineProps({
   reproduciendo: Boolean
 })
 
-
 const canvasRef = ref(null)
 let gl, program
+
+defineExpose({ canvasRef })
 
 function render() {
   if (!canvasRef.value) return

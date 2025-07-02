@@ -1,16 +1,15 @@
 <script setup>
 import { PlayCircleIcon, PauseCircleIcon } from '@heroicons/vue/24/solid'
-import { ref, defineEmits } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 const emit = defineEmits(['clickGrabar'])
-const grabando = ref(false);
+const props = defineProps({ grabando: Boolean })
 function manejarClick() {
-  grabando.value = !grabando.value
   emit('clickGrabar')
 }
 </script>
 
 <template>
   <button title="Play/End shader recording" type="button" class="boton" @click="manejarClick" >
-    <component :is="grabando ? PauseCircleIcon : PlayCircleIcon" class="botonIcono" />
+    <component :is="props.grabando ? PauseCircleIcon : PlayCircleIcon" class="botonIcono" />
   </button>
 </template>

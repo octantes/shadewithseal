@@ -18,10 +18,11 @@ const mostrarEstructura = ref(false)
 const mostrarCodigo = ref(false)
 const tipoActual = ref('')
 
-const emit = defineEmits(['update:codigo', 'reproduccion', 'resetear'])
+const emit = defineEmits(['update:codigo', 'reproduccion', 'resetear', 'clickGrabar'])
 const props = defineProps({
   codigo: String,
   reproduciendo: Boolean,
+  grabando: Boolean,
 })
 
 function alternarBiblioteca() {
@@ -61,7 +62,7 @@ function alternarReproduccion() {
         <div class="fila" v-if="mostrarCodigo">
           <botonReiniciar @clickReiniciar="emit('resetear')" />
           <botonReproducir :activo="props.reproduciendo" @clickReproducir="alternarReproduccion" />
-          <botonGrabar @clickGrabar="" />
+          <botonGrabar :grabando="props.grabando" @clickGrabar="$emit('clickGrabar')" />
           <botonAvanzar @clickAvanzar="" />
         </div>
 
