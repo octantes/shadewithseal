@@ -17,9 +17,9 @@ function crearShader(gl, type, source) {
   gl.shaderSource(shader, source)
   gl.compileShader(shader)
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    console.error(gl.getShaderInfoLog(shader))
+    const error = gl.getShaderInfoLog(shader)
     gl.deleteShader(shader)
-    return null
+    return error
   }
   return shader
 }
@@ -28,33 +28,31 @@ export function prepararPrograma(glContext, fragSrc) {
   gl = glContext
   const vs = crearShader(gl, gl.VERTEX_SHADER, vertexShaderSrc)
   const fs = crearShader(gl, gl.FRAGMENT_SHADER, fragSrc)
-  if (!vs || !fs) return null
+
+  if (typeof vs === 'string') return { type: 'VERTEX: ', message: vs }
+  if (typeof fs === 'string') return { type: 'FRAGMENT', message: fs }
 
   program = gl.createProgram()
   gl.attachShader(program, vs)
   gl.attachShader(program, fs)
   gl.linkProgram(program)
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    console.error(gl.getProgramInfoLog(program))
-    return null
+    const error = gl.getProgramInfoLog(program)
+    return `error en linkeo:\n${error}`
   }
-  gl.useProgram(program)
 
+  gl.useProgram(program)
   const posLoc = gl.getAttribLocation(program, 'position')
   const buffer = gl.createBuffer()
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array([
-      -1, -1,
-       1, -1,
-      -1,  1,
-      -1,  1,
-       1, -1,
-       1,  1,
-    ]),
-    gl.STATIC_DRAW
-  )
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1, -1,
+     1, -1,
+    -1,  1,
+    -1,  1,
+     1, -1,
+     1,  1,
+  ]), gl.STATIC_DRAW)
   gl.enableVertexAttribArray(posLoc)
   gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0)
 
@@ -64,7 +62,7 @@ export function prepararPrograma(glContext, fragSrc) {
   }
   pausedTime = 0
   startTime = performance.now()
-  return program
+  return null
 }
 
 function renderLoop() {

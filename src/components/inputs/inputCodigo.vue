@@ -24,7 +24,6 @@ function onInput(e) {
   font-size: 1rem;
   background: #111;
   color: #d8dade;
-  border: 1px solid #333;
   padding: 8px;
   resize: vertical;
 }
