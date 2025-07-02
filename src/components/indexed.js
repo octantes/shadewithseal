@@ -47,6 +47,11 @@ export async function obtenerCarpetas() {
   return db.getAll('carpetas')
 }
 
+export async function obtenerArchivoPorId(id) {
+  const db = await dbPromise
+  return db.get('archivos', id)
+}
+
 export async function eliminarCarpeta(nombre) {
   const db = await dbPromise
   const carpeta = await db.getFromIndex('carpetas', 'porNombre', nombre)

@@ -47,6 +47,10 @@ function alternarReproduccion() {
   emit('reproduccion', !props.reproduciendo)
 }
 
+function reemplazarCodigo(nuevoCodigo) {
+  emit('update:codigo', nuevoCodigo)
+}
+
 </script>
 
 <template>
@@ -83,7 +87,7 @@ function alternarReproduccion() {
   
         <inputCodigo v-if="mostrarCodigo" :modelValue="props.codigo" @update:modelValue="emit('update:codigo', $event)" />
         <bibliotecaGuardar v-if="tipoActual" :tipoActual="tipoActual" :codigo="props.codigo" @cerrar="tipoActual = ''" />
-        <bibliotecaEstructura v-if="mostrarEstructura && !tipoActual" />
+        <bibliotecaEstructura v-if="mostrarEstructura && !tipoActual" @cargarShader="reemplazarCodigo"/>
   
       </div>
 

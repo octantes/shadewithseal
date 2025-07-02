@@ -1,17 +1,20 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, defineEmits  } from 'vue'
 import { useBiblioteca } from '../biblioteca.js'
+import { obtenerArchivoPorId } from '../indexed.js'
+
+const emit = defineEmits(['cargarShader'])
 
 const {
   biblioteca,
   cargarBiblioteca,
-  eliminarCarpetaDesdeUI: eliminarCarpeta,
-  eliminarArchivoDesdeUI: eliminarArchivo,
+  eliminarCarpeta,
+  eliminarArchivo,
   cancelarEdicion,
   confirmarEdicion
 } = useBiblioteca()
-onMounted(cargarBiblioteca)
 
+onMounted(cargarBiblioteca)
 
 function eliminarCarpetaConfirmada(carpeta) {
   const ok = confirm('Are you sure you want to delete this folder and all its files?')
@@ -21,6 +24,14 @@ function eliminarCarpetaConfirmada(carpeta) {
 function eliminarArchivoConfirmado(carpetaNombre, archivoNombre) {
   const ok = confirm('Are you sure you want to delete this file?')
   if (ok) eliminarArchivo(carpetaNombre, archivoNombre)
+}
+
+async function cargarArchivoConfirmado(carpetaNombre, archivoNombre) {
+  const ok = confirm('Are you sure you want to load this shader? Unsaved changes will be lost.')
+  if (!ok) return
+  const id = `${carpetaNombre}/${archivoNombre}`
+  const archivo = await obtenerArchivoPorId(id)
+  if (archivo && archivo.codigo) emit('cargarShader', archivo.codigo)
 }
 
 </script>
@@ -53,7 +64,8 @@ function eliminarArchivoConfirmado(carpetaNombre, archivoNombre) {
 
       <div v-if="carpeta.abierta && carpeta.archivos.length">
 
-        <div class="objeto" v-for="archivo in carpeta.archivos" :key="carpeta.nombre + '/' + archivo.nombre" >
+        <div class="objeto" v-for="archivo in carpeta.archivos" :key="carpeta.nombre + '/' + archivo.nombre" 
+          @click="!archivo.editando && cargarArchivoConfirmado(carpeta.nombre, archivo.nombre)">
 
           <template v-if="!archivo.editando">
             <span>{{ '¬ ' + archivo.nombre }}</span>
