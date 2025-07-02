@@ -1,199 +1,149 @@
-import { ref } from 'vue'
-import {
-  obtenerCarpetas,
-  obtenerArchivosPorCarpeta,
-  eliminarCarpeta,
-  eliminarArchivo,
-  renombrarCarpeta,
-  renombrarArchivo,
-  crearArchivo,
-  crearCarpeta
-} from './indexed.js'
+import { openDB } from 'idb'
 
-const biblioteca = ref([])
-const cargando = ref(false)
-const creando = ref(false)
-const error = ref(null)
-
-async function cargarBiblioteca() {
-  cargando.value = true
-  error.value = null
-  try {
-    const resultado = []
-
-    const archivosDefault = await obtenerArchivosPorCarpeta('default')
-    resultado.push({
-      id: 'default',
-      nombre: 'default',
-      nuevoNombre: 'default',
-      editando: false,
-      abierta: false,
-      archivos: archivosDefault.map(a => ({
-        id: a.id,
-        nombre: a.nombre,
-        nuevoNombre: a.nombre,
-        editando: false
-      }))
-    })
-
-    const carpetas = await obtenerCarpetas()
-    for (const carpeta of carpetas) {
-      if (carpeta.nombre === 'default') continue
-      const archivos = await obtenerArchivosPorCarpeta(carpeta.nombre)
-      resultado.push({
-        id: carpeta.id,
-        nombre: carpeta.nombre,
-        nuevoNombre: carpeta.nombre,
-        editando: false,
-        abierta: false,
-        archivos: archivos.map(a => ({
-          id: a.id,
-          nombre: a.nombre,
-          nuevoNombre: a.nombre,
-          editando: false
-        }))
-      })
-    }
-
-    biblioteca.value = resultado
-  } catch (e) {
-    error.value = e
-  } finally {
-    cargando.value = false
-  }
-}
-
-async function eliminarCarpetaDesdeUI(carpeta) {
-  if (!carpeta?.nombre || carpeta.nombre === 'default') return
-  try {
-    // asegurar que se pase el nombre actual persistido, no el nombre editable
-    await eliminarCarpeta(carpeta.nombre)
-    const idx = biblioteca.value.findIndex(c => c.id === carpeta.id)
-    if (idx !== -1) biblioteca.value.splice(idx, 1)
-  } catch (e) {
-    error.value = e
-  }
-}
-
-async function eliminarArchivoDesdeUI(carpetaNombre, archivoNombre) {
-  const carpeta = biblioteca.value.find(c => c.nombre === carpetaNombre)
-  const archivo = carpeta?.archivos.find(a => a.nombre === archivoNombre)
-  if (!archivo) return
-  try {
-    await eliminarArchivo(archivo.id)
-    const idx = carpeta.archivos.findIndex(a => a.id === archivo.id)
-    if (idx !== -1) carpeta.archivos.splice(idx, 1)
-  } catch (e) {
-    error.value = e
-  }
-}
-
-function cancelarEdicion(obj) {
-  obj.editando = false
-  obj.nuevoNombre = obj.nombre
-}
-
-async function confirmarEdicion(obj, carpeta = null) {
-  const limpio = obj.nuevoNombre.trim()
-  if (!limpio || limpio === obj.nombre) {
-    cancelarEdicion(obj)
-    return
-  }
-
-  try {
-    if (!carpeta) {
-      if (biblioteca.value.some(c => c.nombre === limpio)) {
-        throw new Error('That folder already exists')
-      }
-      await renombrarCarpeta(obj.nombre, limpio)
-      const carpetaUI = biblioteca.value.find(c => c.id === obj.id)
-      carpetaUI.nombre = limpio
-      carpetaUI.nuevoNombre = limpio
-      carpetaUI.editando = false
+const dbPromise = openDB('sealDB', 2, {
+  upgrade(db, oldVersion) {
+    if (!db.objectStoreNames.contains('carpetas')) {
+      const carpetas = db.createObjectStore('carpetas', { keyPath: 'id' })
+      carpetas.createIndex('porNombre', 'nombre', { unique: true })
     } else {
-      // buscar carpeta UI por id (no por nombre)
-      const carpetaUI = biblioteca.value.find(c => c.id === carpeta.id)
-      if (carpetaUI.archivos.some(a => a.nombre === limpio)) {
-        throw new Error('That file already exists')
+      const tx = db.transaction('carpetas', 'versionchange')
+      const store = tx.objectStore('carpetas')
+      if (!store.indexNames.contains('porNombre')) {
+        store.createIndex('porNombre', 'nombre', { unique: true })
       }
-      const idViejo = `${carpeta.nombre}/${obj.nombre}`
-      await renombrarArchivo(idViejo, limpio)
-      const archivoUI = carpetaUI.archivos.find(a => a.nombre === obj.nombre)
-      archivoUI.nombre = limpio
-      archivoUI.nuevoNombre = limpio
-      archivoUI.id = `${carpeta.nombre}/${limpio}`
-      archivoUI.editando = false
     }
-  } catch (e) {
-    error.value = e
-  }
-}
 
-async function guardarNuevoArchivo({ carpeta, nombre, codigo }) {
-  if (!nombre) return false
-  creando.value = true
-  try {
-    const archivo = await crearArchivo({ carpeta, nombre, codigo })
-    const carpetaUI = biblioteca.value.find(c => c.nombre === carpeta)
-    if (carpetaUI) {
-      carpetaUI.archivos.push({
-        id: archivo.id,
-        nombre: archivo.nombre,
-        nuevoNombre: archivo.nombre,
-        editando: false
-      })
+    if (!db.objectStoreNames.contains('archivos')) {
+      const archivos = db.createObjectStore('archivos', { keyPath: 'id' })
+      archivos.createIndex('porCarpeta', 'carpeta')
     } else {
-      await cargarBiblioteca()
+      const tx = db.transaction('archivos', 'versionchange')
+      const store = tx.objectStore('archivos')
+      if (!store.indexNames.contains('porCarpeta')) {
+        store.createIndex('porCarpeta', 'carpeta')
+      }
     }
-    return true
-  } catch (e) {
-    error.value = e
-    return false
-  } finally {
-    creando.value = false
   }
+})
+
+// helpers
+function generarId() {
+  return crypto.randomUUID()
 }
 
-async function guardarNuevaCarpeta(nombre) {
-  const limpio = nombre.trim()
-  if (!limpio) throw new Error('You must enter a name')
-  if (biblioteca.value.some(c => c.nombre === limpio)) {
-    throw new Error('That folder already exists')
+// carpetas
+export async function crearCarpeta(nombre) {
+  const db = await dbPromise
+  const existe = await db.getFromIndex('carpetas', 'porNombre', nombre)
+  if (existe) throw new Error('A folder with that name already exists')
+
+  const nueva = { id: generarId(), nombre, creada: Date.now() }
+  await db.add('carpetas', nueva)
+  return nueva
+}
+
+export async function obtenerCarpetas() {
+  const db = await dbPromise
+  return db.getAll('carpetas')
+}
+
+export async function eliminarCarpeta(nombre) {
+  const db = await dbPromise
+  const carpeta = await db.getFromIndex('carpetas', 'porNombre', nombre)
+  if (!carpeta) throw new Error('Folder not found')
+
+  const archivos = await obtenerArchivosPorCarpeta(nombre)
+  const tx = db.transaction(['carpetas', 'archivos'], 'readwrite')
+  const carpetasStore = tx.objectStore('carpetas')
+  const archivosStore = tx.objectStore('archivos')
+
+  for (const archivo of archivos) {
+    archivosStore.delete(archivo.id)
   }
 
-  creando.value = true
-  try {
-    const carpeta = await crearCarpeta(limpio)
-    biblioteca.value.push({
-      id: carpeta.id,
-      nombre: carpeta.nombre,
-      nuevoNombre: carpeta.nombre,
-      editando: false,
-      abierta: false,
-      archivos: []
-    })
-    return true
-  } catch (e) {
-    error.value = e
-    throw e
-  } finally {
-    creando.value = false
-  }
+  carpetasStore.delete(carpeta.id)
+  await tx.done
 }
 
 
-export function useBiblioteca() {
-  return {
-    biblioteca,
-    cargando,
-    creando,
-    error,
-    cargarBiblioteca,
-    eliminarCarpetaDesdeUI,
-    eliminarArchivoDesdeUI,
-    cancelarEdicion,
-    confirmarEdicion,
-    guardarNuevoArchivo,
-    guardarNuevaCarpeta
+// archivos
+export async function crearArchivo({ carpeta, nombre, codigo }) {
+  const db = await dbPromise
+  const id = `${carpeta}/${nombre}`
+  const existe = await db.get('archivos', id)
+  if (existe) throw new Error('That file already exists in the selected folder')
+
+  const archivo = {
+    id,
+    nombre,
+    carpeta,
+    codigo,
+    creado: Date.now()
   }
+
+  await db.add('archivos', archivo)
+  return archivo
+}
+
+export async function obtenerArchivosPorCarpeta(carpeta) {
+  const db = await dbPromise
+  const tx = db.transaction('archivos')
+  const index = tx.store.index('porCarpeta')
+  return index.getAll(carpeta)
+}
+
+export async function eliminarArchivo(id) {
+  const db = await dbPromise
+  return db.delete('archivos', id)
+}
+
+export async function renombrarCarpeta(nombreViejo, nombreNuevo) {
+  const db = await dbPromise;
+  // busco la carpeta original por índice
+  const carpeta = await db.getFromIndex('carpetas', 'porNombre', nombreViejo);
+  if (!carpeta) throw new Error('Folder not found');
+  // chequeo que no exista ya la nueva
+  const existe = await db.getFromIndex('carpetas', 'porNombre', nombreNuevo);
+  if (existe) throw new Error('A folder with that name already exists');
+
+  // traigo todos los archivos de la carpeta vieja
+  const archivos = await obtenerArchivosPorCarpeta(nombreViejo);
+  // inicio tx en ambos object stores
+  const tx = db.transaction(['carpetas', 'archivos'], 'readwrite');
+  const carpetasStore = tx.objectStore('carpetas');
+  const archivosStore  = tx.objectStore('archivos');
+
+  // borro la carpeta vieja y agrego la nueva con el nombre actualizado
+  carpetasStore.delete(carpeta.id);
+  carpetasStore.add({ 
+    ...carpeta, 
+    nombre: nombreNuevo, 
+    creada: Date.now() 
+  });
+
+  // para cada archivo, cambio su id (que es carpeta/nombre) y carpeta
+  for (const archivo of archivos) {
+    const nuevoId = `${nombreNuevo}/${archivo.nombre}`;
+    archivosStore.delete(archivo.id);
+    archivosStore.add({
+      ...archivo,
+      id: nuevoId,
+      carpeta: nombreNuevo
+    });
+  }
+
+  await tx.done;
+}
+
+export async function renombrarArchivo(idViejo, nombreNuevo) {
+  const db = await dbPromise
+  const archivo = await db.get('archivos', idViejo)
+  if (!archivo) throw new Error('Folder not found')
+
+  const nuevoId = `${archivo.carpeta}/${nombreNuevo}`
+  const yaExiste = await db.get('archivos', nuevoId)
+  if (yaExiste) throw new Error('A folder with that name already exists')
+
+  await db.delete('archivos', idViejo)
+  return db.add('archivos', { ...archivo, nombre: nombreNuevo, id: nuevoId })
 }
