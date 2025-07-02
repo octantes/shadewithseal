@@ -1,4 +1,7 @@
-export function crearGrabadorCanvas(canvas, opciones = { mimeType: 'video/webm; codecs=vp9' }) {
+export function crearGrabadorCanvas(canvas, opciones = { 
+  mimeType: 'video/webm; codecs=vp9',
+  videoBitsPerSecond: 20_000_000,
+}) {
   let mediaRecorder = null
   let chunks = []
   let grabando = false
@@ -21,7 +24,10 @@ export function crearGrabadorCanvas(canvas, opciones = { mimeType: 'video/webm; 
 
   function detener() {
     return new Promise(resolve => {
-      if (!grabando) resolve(null)
+      if (!grabando) {
+        resolve(null)
+        return
+      }
       mediaRecorder.onstop = () => {
         grabando = false
         const blob = new Blob(chunks, { type: opciones.mimeType })
