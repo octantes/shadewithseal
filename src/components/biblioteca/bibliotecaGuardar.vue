@@ -39,13 +39,13 @@ async function cargarCarpetas() {
 async function onAceptar() {
   const limpio = nombreNuevo.value.trim()
   if (!limpio) {
-    alert('debe ingresar un nombre')
+    alert('You must enter a name')
     return
   }
 
   if (props.tipoActual === 'carpeta') {
     if (biblioteca.value.some(c => c.nombre === limpio)) {
-      alert('ya existe esa carpeta')
+      alert('That folder already exists')
       return
     }
   }
@@ -53,7 +53,7 @@ async function onAceptar() {
   if (props.tipoActual === 'archivo') {
     const carpeta = biblioteca.value.find(c => c.nombre === carpetaSeleccionada.value)
     if (carpeta?.archivos.some(a => a.nombre === limpio)) {
-      alert('ya existe ese archivo en la carpeta seleccionada')
+      alert('That file already exists in the selected folder')
       return
     }
   }
@@ -70,12 +70,12 @@ async function onAceptar() {
       ok = await guardarNuevaCarpeta(limpio) // esta ahora lanza error si falla
     }
   } catch (e) {
-    alert(e.message || 'error al crear')
+    alert(e.message || 'Error creating item')
     return
   }
 
   if (!ok) {
-    alert('no se pudo crear')
+    alert('Could not create item')
     return
   }
 

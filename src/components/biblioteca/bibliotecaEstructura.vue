@@ -2,8 +2,26 @@
 import { onMounted } from 'vue'
 import { useBiblioteca } from '../biblioteca.js'
 
-const {  biblioteca, cargarBiblioteca, eliminarCarpetaDesdeUI, eliminarArchivoDesdeUI, cancelarEdicion, confirmarEdicion } = useBiblioteca()
+const {
+  biblioteca,
+  cargarBiblioteca,
+  eliminarCarpetaDesdeUI: eliminarCarpeta,
+  eliminarArchivoDesdeUI: eliminarArchivo,
+  cancelarEdicion,
+  confirmarEdicion
+} = useBiblioteca()
 onMounted(cargarBiblioteca)
+
+
+function eliminarCarpetaConfirmada(carpeta) {
+  const ok = confirm('Are you sure you want to delete this folder and all its files?')
+  if (ok) eliminarCarpeta(carpeta)
+}
+
+function eliminarArchivoConfirmado(carpetaNombre, archivoNombre) {
+  const ok = confirm('Are you sure you want to delete this file?')
+  if (ok) eliminarArchivo(carpetaNombre, archivoNombre)
+}
 
 </script>
 
@@ -19,7 +37,7 @@ onMounted(cargarBiblioteca)
           <span>{{ carpeta.nombre }}</span>
           <div class="acciones">
             <button v-if="carpeta.nombre !== 'default'" @click.stop="carpeta.editando = true">✏️</button>
-            <button v-if="carpeta.nombre !== 'default'" @click.stop="eliminarCarpetaDesdeUI(carpeta)">✖️</button>
+            <button v-if="carpeta.nombre !== 'default'" @click.stop="eliminarCarpetaConfirmada(carpeta)">✖️</button>
           </div>
         </template>
 
@@ -41,7 +59,7 @@ onMounted(cargarBiblioteca)
             <span>{{ '¬ ' + archivo.nombre }}</span>
             <div class="acciones">
               <button @click.stop="archivo.editando = true">✏️</button>
-              <button @click.stop="eliminarArchivoDesdeUI(carpeta.nombre, archivo.nombre)">✖️</button>
+              <button @click.stop="eliminarArchivoConfirmado(carpeta.nombre, archivo.nombre)">✖️</button>
             </div>
           </template>
 

@@ -25,4 +25,5 @@ const props = defineProps({
   white-space: pre-wrap;
   overflow: auto;
 }
+.modalError:hover { background: #1b1c1c; transition: 1s; }
 </style>

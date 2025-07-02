@@ -103,7 +103,7 @@ async function confirmarEdicion(obj, carpeta = null) {
   try {
     if (!carpeta) {
       if (biblioteca.value.some(c => c.nombre === limpio)) {
-        throw new Error('ya existe esa carpeta')
+        throw new Error('That folder already exists')
       }
       await renombrarCarpeta(obj.nombre, limpio)
       const carpetaUI = biblioteca.value.find(c => c.id === obj.id)
@@ -114,7 +114,7 @@ async function confirmarEdicion(obj, carpeta = null) {
       // buscar carpeta UI por id (no por nombre)
       const carpetaUI = biblioteca.value.find(c => c.id === carpeta.id)
       if (carpetaUI.archivos.some(a => a.nombre === limpio)) {
-        throw new Error('ya existe ese archivo')
+        throw new Error('That file already exists')
       }
       const idViejo = `${carpeta.nombre}/${obj.nombre}`
       await renombrarArchivo(idViejo, limpio)
@@ -156,9 +156,9 @@ async function guardarNuevoArchivo({ carpeta, nombre, codigo }) {
 
 async function guardarNuevaCarpeta(nombre) {
   const limpio = nombre.trim()
-  if (!limpio) throw new Error('debe ingresar un nombre')
+  if (!limpio) throw new Error('You must enter a name')
   if (biblioteca.value.some(c => c.nombre === limpio)) {
-    throw new Error('ya existe esa carpeta')
+    throw new Error('That folder already exists')
   }
 
   creando.value = true

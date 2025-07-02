@@ -35,7 +35,7 @@ function generarId() {
 export async function crearCarpeta(nombre) {
   const db = await dbPromise
   const existe = await db.getFromIndex('carpetas', 'porNombre', nombre)
-  if (existe) throw new Error('ya existe una carpeta con ese nombre')
+  if (existe) throw new Error('A folder with that name already exists')
 
   const nueva = { id: generarId(), nombre, creada: Date.now() }
   await db.add('carpetas', nueva)
@@ -50,7 +50,7 @@ export async function obtenerCarpetas() {
 export async function eliminarCarpeta(nombre) {
   const db = await dbPromise
   const carpeta = await db.getFromIndex('carpetas', 'porNombre', nombre)
-  if (!carpeta) throw new Error('carpeta no encontrada')
+  if (!carpeta) throw new Error('Folder not found')
 
   const archivos = await obtenerArchivosPorCarpeta(nombre)
   const tx = db.transaction(['carpetas', 'archivos'], 'readwrite')
@@ -71,7 +71,7 @@ export async function crearArchivo({ carpeta, nombre, codigo }) {
   const db = await dbPromise
   const id = `${carpeta}/${nombre}`
   const existe = await db.get('archivos', id)
-  if (existe) throw new Error('ya existe un archivo con ese nombre en la carpeta')
+  if (existe) throw new Error('That file already exists in the selected folder')
 
   const archivo = {
     id,
@@ -101,10 +101,10 @@ export async function renombrarCarpeta(nombreViejo, nombreNuevo) {
   const db = await dbPromise;
   // busco la carpeta original por índice
   const carpeta = await db.getFromIndex('carpetas', 'porNombre', nombreViejo);
-  if (!carpeta) throw new Error('carpeta no encontrada');
+  if (!carpeta) throw new Error('Folder not found');
   // chequeo que no exista ya la nueva
   const existe = await db.getFromIndex('carpetas', 'porNombre', nombreNuevo);
-  if (existe) throw new Error('ya existe una carpeta con ese nombre');
+  if (existe) throw new Error('A folder with that name already exists');
 
   // traigo todos los archivos de la carpeta vieja
   const archivos = await obtenerArchivosPorCarpeta(nombreViejo);
@@ -138,11 +138,11 @@ export async function renombrarCarpeta(nombreViejo, nombreNuevo) {
 export async function renombrarArchivo(idViejo, nombreNuevo) {
   const db = await dbPromise
   const archivo = await db.get('archivos', idViejo)
-  if (!archivo) throw new Error('archivo no encontrado')
+  if (!archivo) throw new Error('Folder not found')
 
   const nuevoId = `${archivo.carpeta}/${nombreNuevo}`
   const yaExiste = await db.get('archivos', nuevoId)
-  if (yaExiste) throw new Error('ya existe un archivo con ese nombre')
+  if (yaExiste) throw new Error('A folder with that name already exists')
 
   await db.delete('archivos', idViejo)
   return db.add('archivos', { ...archivo, nombre: nombreNuevo, id: nuevoId })
