@@ -1,5 +1,9 @@
 // webgl.js
-let gl, program, uniforms, startTime, animFrame
+let gl, program, uniforms
+let startTime = 0
+let pausedTime = 0
+let animFrame
+let running = false
 
 const vertexShaderSrc = `
 attribute vec2 position;
@@ -58,6 +62,7 @@ export function prepararPrograma(glContext, fragSrc) {
     uTime: gl.getUniformLocation(program, 'u_time'),
     uRes: gl.getUniformLocation(program, 'u_resolution'),
   }
+  pausedTime = 0
   startTime = performance.now()
   return program
 }
@@ -77,14 +82,17 @@ function renderLoop() {
 }
 
 export function iniciarRenderLoop() {
-  if (animFrame) cancelAnimationFrame(animFrame)
-  startTime = performance.now()
+  if (running) return
+  running = true
+  startTime = performance.now() - pausedTime
   animFrame = requestAnimationFrame(renderLoop)
 }
 
 export function detenerRenderLoop() {
-  if (animFrame) cancelAnimationFrame(animFrame)
-  animFrame = null
+  if (!running) return
+  running = false
+  cancelAnimationFrame(animFrame)
+  pausedTime = performance.now() - startTime
 }
 
 export function resizeCanvas(canvas) {

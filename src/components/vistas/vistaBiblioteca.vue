@@ -9,19 +9,19 @@ import botonGuardar from '../botones/botonGuardar.vue'
 import botonCarpeta from '../botones/botonCarpeta.vue'
 import botonArchivo from '../botones/botonArchivo.vue'
 
-import botonRetroceder from '../botones/botonRetroceder.vue'
+import botonReiniciar from '../botones/botonReiniciar.vue'
 import botonReproducir from '../botones/botonReproducir.vue'
 import botonGrabar from '../botones/botonGrabar.vue'
 import botonAvanzar from '../botones/botonAvanzar.vue'
 
-const reproduciendo = ref(false)
 const mostrarEstructura = ref(false)
 const mostrarCodigo = ref(false)
 const tipoActual = ref('')
 
-const emit = defineEmits(['update:codigo', 'reproduccion'])
+const emit = defineEmits(['update:codigo', 'reproduccion', 'resetear'])
 const props = defineProps({
   codigo: String,
+  reproduciendo: Boolean,
 })
 
 function alternarBiblioteca() {
@@ -43,8 +43,7 @@ function alternarCodigo() {
 }
 
 function alternarReproduccion() {
-  reproduciendo.value = !reproduciendo.value
-  emit('reproduccion', reproduciendo.value)
+  emit('reproduccion', !props.reproduciendo)
 }
 
 </script>
@@ -60,8 +59,8 @@ function alternarReproduccion() {
         <botonCodigo @clickCodigo="alternarCodigo" />
 
         <div class="fila" v-if="mostrarCodigo">
-          <botonRetroceder @clickRetroceder="" />
-          <botonReproducir :activo="reproduciendo" @clickReproducir="alternarReproduccion" />
+          <botonReiniciar @clickReiniciar="emit('resetear')" />
+          <botonReproducir :activo="props.reproduciendo" @clickReproducir="alternarReproduccion" />
           <botonGrabar @clickGrabar="" />
           <botonAvanzar @clickAvanzar="" />
         </div>
