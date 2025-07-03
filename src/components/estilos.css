@@ -16,7 +16,7 @@
   }
 }
 
-.columna { display: flex ; flex-direction: column; gap: .5rem; height: 100%; width: 100%; }
+.columna { display: flex ; flex-direction: column; gap: .5rem; height: 100%; width: 100%; min-height: 0 }
 .fila { display: flex; flex-direction: row; gap: .5rem}
 
 /* botones */
