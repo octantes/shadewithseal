@@ -2,12 +2,13 @@
 import { computed } from 'vue'
 import { ChevronDownIcon } from '@heroicons/vue/24/solid'
 
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
   modelValue: { type: String, default: '' },
   opciones: { type: Array, default: () => [] },
   placeholder: { type: String, default: 'Select' }
 })
-const emit = defineEmits(['update:modelValue'])
+
 const valor = computed({
   get() {
     return props.modelValue
@@ -29,6 +30,7 @@ const valor = computed({
 </template>
 
 <style scoped>
+.wrapper { position: relative; display: inline-block; }
 .input {
   width: 100%;
   min-height: 2rem;
@@ -38,11 +40,6 @@ const valor = computed({
   padding: 0.25rem 2rem 0.25rem 0.5rem;
   border: none;
   appearance: none;
-}
-
-.wrapper {
-  position: relative;
-  display: inline-block;
 }
 .arrow {
   position: absolute;

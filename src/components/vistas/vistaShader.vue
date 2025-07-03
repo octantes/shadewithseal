@@ -20,22 +20,20 @@ void main() {
 
 const props = defineProps({
   codigo: { type: String, default: placeholderShader },
-  reproduciendo: Boolean
+  reproduciendo: Boolean,
 })
 
+const errorShader = ref(null)
 const canvasRef = ref(null)
 let gl, program
-
 defineExpose({ canvasRef })
-
-const errorShader = ref(null)
 
 function render() {
   if (!canvasRef.value) return
   const canvas = canvasRef.value
   gl = canvas.getContext('webgl')
   if (!gl) {
-    errorShader.value = 'webgl no soportado'
+    errorShader.value = 'webgl is not supported by your browser'
     return
   }
   resizeCanvas(canvas)

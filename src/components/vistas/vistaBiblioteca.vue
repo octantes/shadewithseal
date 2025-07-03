@@ -8,11 +8,9 @@ import botonCodigo from '../botones/botonCodigo.vue'
 import botonGuardar from '../botones/botonGuardar.vue'
 import botonCarpeta from '../botones/botonCarpeta.vue'
 import botonArchivo from '../botones/botonArchivo.vue'
-
 import botonReiniciar from '../botones/botonReiniciar.vue'
 import botonReproducir from '../botones/botonReproducir.vue'
 import botonGrabar from '../botones/botonGrabar.vue'
-import botonAvanzar from '../botones/botonAvanzar.vue'
 
 const mostrarEstructura = ref(false)
 const mostrarCodigo = ref(false)
@@ -67,7 +65,6 @@ function reemplazarCodigo(nuevoCodigo) {
           <botonReiniciar @clickReiniciar="emit('resetear')" />
           <botonReproducir :activo="props.reproduciendo" @clickReproducir="alternarReproduccion" />
           <botonGrabar :grabando="props.grabando" @clickGrabar="$emit('clickGrabar')" />
-          <botonAvanzar @clickAvanzar="" />
         </div>
 
       </div>
@@ -83,7 +80,7 @@ function reemplazarCodigo(nuevoCodigo) {
 
       </div>
 
-      <div class="columna">
+      <div class="columnax">
   
         <inputCodigo v-if="mostrarCodigo" :modelValue="props.codigo" @update:modelValue="emit('update:codigo', $event)" />
         <bibliotecaGuardar v-if="tipoActual" :tipoActual="tipoActual" :codigo="props.codigo" @cerrar="tipoActual = ''" />

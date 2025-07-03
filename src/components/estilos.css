@@ -16,8 +16,10 @@
   }
 }
 
-.columna { display: flex ; flex-direction: column; gap: .5rem; height: 100%; width: 100%; min-height: 0 }
+.columna { display: flex ; flex-direction: column; gap: .5rem; height: 100%; width: 100% }
 .fila { display: flex; flex-direction: row; gap: .5rem}
+.shader { width: 50rem; height: 50rem; padding: 1rem; }
+.columnax { display: flex ; flex-direction: column; gap: .5rem; height: 100%; width: 100%; min-height: 0 }
 
 /* botones */
 
@@ -30,7 +32,3 @@
 .botonVariable { flex: 1 1 auto;  height: 2rem; background-color: #1b1c1c; }
 .botonVariable:hover { background: #3c3c3c; }
 .botonVariable:active { transform: scale(0.98); }
-
-/**/
-
-.shader { width: 50rem; height: 50rem; padding: 1rem; }

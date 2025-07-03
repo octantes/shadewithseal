@@ -7,32 +7,31 @@ import inputSelector from '../inputs/inputSelector.vue'
 import botonAceptar from '../botones/botonAceptar.vue'
 import botonCancelar from '../botones/botonCancelar.vue'
 
+const { biblioteca, cargarBiblioteca, guardarNuevoArchivo, guardarNuevaCarpeta, creando } = useBiblioteca()
+const emit = defineEmits(['cerrar'])
 const props = defineProps({
   codigo: String,
   tipoActual: String
 })
-const emit = defineEmits(['cerrar'])
-
-const {
-  biblioteca,
-  cargarBiblioteca,
-  guardarNuevoArchivo,
-  guardarNuevaCarpeta,
-  creando
-} = useBiblioteca()
 
 const nombreNuevo = ref('')
 const carpetaSeleccionada = ref('')
 const carpetas = ref([])
+
+onMounted(cargarCarpetas)
+
+watch(() => props.tipoActual, () => {
+  nombreNuevo.value = ''
+  carpetaSeleccionada.value = 'default'
+  cargarCarpetas()
+})
 
 async function cargarCarpetas() {
   const todas = await obtenerCarpetas()
   if (!todas.find(c => c.nombre === 'default')) todas.unshift({ nombre: 'default' })
   carpetas.value = todas
   if (!carpetas.value.find(c => c.nombre === carpetaSeleccionada.value)) {
-    carpetaSeleccionada.value = carpetas.value.length
-      ? carpetas.value[0].nombre
-      : 'default'
+    carpetaSeleccionada.value = carpetas.value.length ? carpetas.value[0].nombre : 'default'
   }
 }
 
@@ -42,14 +41,12 @@ async function onAceptar() {
     alert('You must enter a name')
     return
   }
-
   if (props.tipoActual === 'carpeta') {
     if (biblioteca.value.some(c => c.nombre === limpio)) {
       alert('That folder already exists')
       return
     }
   }
-
   if (props.tipoActual === 'archivo') {
     const carpeta = biblioteca.value.find(c => c.nombre === carpetaSeleccionada.value)
     if (carpeta?.archivos.some(a => a.nombre === limpio)) {
@@ -57,7 +54,6 @@ async function onAceptar() {
       return
     }
   }
-
   let ok = false
   try {
     if (props.tipoActual === 'archivo') {
@@ -73,12 +69,10 @@ async function onAceptar() {
     alert(e.message || 'Error creating item')
     return
   }
-
   if (!ok) {
     alert('Could not create item')
     return
   }
-
   await cargarCarpetas()
   await cargarBiblioteca()
   nombreNuevo.value = ''
@@ -90,37 +84,18 @@ function onCancelar() {
   emit('cerrar')
 }
 
-onMounted(cargarCarpetas)
-watch(() => props.tipoActual, () => {
-  nombreNuevo.value = ''
-  carpetaSeleccionada.value = 'default'
-  cargarCarpetas()
-})
 </script>
 
 <template>
   <div class="fila" v-if="props.tipoActual">
-    <inputNombre
-      v-model="nombreNuevo"
-      :placeholder="props.tipoActual === 'archivo'
-        ? 'Name your shader'
-        : 'Name your folder'"
-    />
 
-    <inputSelector
-      v-if="props.tipoActual === 'archivo' && carpetas.length && carpetas.some(c => c.nombre === carpetaSeleccionada)"
-      v-model="carpetaSeleccionada"
-      :opciones="carpetas.map(c => c.nombre)"
-      placeholder="Select a folder"
+    <inputNombre v-model="nombreNuevo" :placeholder="props.tipoActual === 'archivo' ? 'Name your shader' : 'Name your folder'" />
+    <inputSelector v-if="props.tipoActual === 'archivo' && carpetas.length && carpetas.some(c => c.nombre === carpetaSeleccionada)"
+      v-model="carpetaSeleccionada" placeholder="Select a folder" :opciones="carpetas.map(c => c.nombre)"
     />
+    
+    <botonAceptar :disabled="!nombreNuevo || creando" @click-aceptar="onAceptar" />
+    <botonCancelar :disabled="creando" @click-cancelar="onCancelar" />
 
-    <botonAceptar
-      :disabled="!nombreNuevo || creando"
-      @click-aceptar="onAceptar"
-    />
-    <botonCancelar
-      :disabled="creando"
-      @click-cancelar="onCancelar"
-    />
   </div>
 </template>

@@ -1,13 +1,9 @@
 import { ref } from 'vue'
 import {
-  obtenerCarpetas,
-  obtenerArchivosPorCarpeta,
-  eliminarCarpeta,
-  eliminarArchivo,
-  renombrarCarpeta,
-  renombrarArchivo,
-  crearArchivo,
-  crearCarpeta
+  crearArchivo, crearCarpeta,
+  obtenerCarpetas, obtenerArchivosPorCarpeta,
+  renombrarCarpeta, renombrarArchivo,
+  eliminarCarpeta, eliminarArchivo,
 } from './indexed.js'
 
 const biblioteca = ref([])
@@ -20,7 +16,6 @@ async function cargarBiblioteca() {
   error.value = null
   try {
     const resultado = []
-
     const archivosDefault = await obtenerArchivosPorCarpeta('default')
     resultado.push({
       id: 'default',
@@ -162,7 +157,6 @@ async function guardarNuevaCarpeta(nombre) {
   if (biblioteca.value.some(c => c.nombre === limpio)) {
     throw new Error('That folder already exists')
   }
-
   creando.value = true
   try {
     const carpeta = await crearCarpeta(limpio)

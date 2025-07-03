@@ -1,4 +1,3 @@
-// webgl.js
 let gl, program, uniforms
 let startTime = 0
 let pausedTime = 0
@@ -30,10 +29,8 @@ export function prepararPrograma(glContext, fragSrc) {
   gl = glContext
   const vs = crearShader(gl, gl.VERTEX_SHADER, vertexShaderSrc)
   const fs = crearShader(gl, gl.FRAGMENT_SHADER, fragSrc)
-
   if (typeof vs === 'string') return { type: 'VERTEX', message: vs }
   if (typeof fs === 'string') return { type: 'FRAGMENT', message: fs }
-
   program = gl.createProgram()
   gl.attachShader(program, vs)
   gl.attachShader(program, fs)
@@ -42,7 +39,6 @@ export function prepararPrograma(glContext, fragSrc) {
     const error = gl.getProgramInfoLog(program)
     return `error en linkeo:\n${error}`
   }
-
   gl.useProgram(program)
   const posLoc = gl.getAttribLocation(program, 'position')
   const buffer = gl.createBuffer()
@@ -57,7 +53,6 @@ export function prepararPrograma(glContext, fragSrc) {
   ]), gl.STATIC_DRAW)
   gl.enableVertexAttribArray(posLoc)
   gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0)
-
   uniforms = {
     uTime: gl.getUniformLocation(program, 'u_time'),
     uRes: gl.getUniformLocation(program, 'u_resolution'),
@@ -68,7 +63,6 @@ export function prepararPrograma(glContext, fragSrc) {
     iTimeDelta: gl.getUniformLocation(program, 'iTimeDelta'),
     iDate: gl.getUniformLocation(program, 'iDate'),
   }
-
   pausedTime = 0
   startTime = performance.now()
   return null
@@ -79,14 +73,11 @@ function renderLoop() {
   const now = performance.now()
   const t = (now - startTime) / 1000
   const dt = (now - (startTime + frameCount * (1000 / 60))) / 1000
-
   const date = new Date()
   const seconds = date.getSeconds() + 60 * date.getMinutes() + 3600 * date.getHours()
-
   gl.useProgram(program)
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
   gl.clear(gl.COLOR_BUFFER_BIT)
-
   if (uniforms.uTime) gl.uniform1f(uniforms.uTime, t)
   if (uniforms.iTime) gl.uniform1f(uniforms.iTime, t)
   if (uniforms.iTimeDelta) gl.uniform1f(uniforms.iTimeDelta, dt)
@@ -101,7 +92,6 @@ function renderLoop() {
     date.getDate(),
     seconds
   )
-
   gl.drawArrays(gl.TRIANGLES, 0, 6)
   animFrame = requestAnimationFrame(renderLoop)
 }
@@ -114,7 +104,6 @@ export function iniciarRenderLoop() {
   startTime = performance.now() - pausedTime
   frameCount = 0
   animFrame = requestAnimationFrame(renderLoop)
-
   if (!listenersAgregados && gl) {
     const canvas = gl.canvas
     canvas.addEventListener('mousemove', e => {

@@ -11,13 +11,11 @@ export function crearGrabadorCanvas(canvas, opciones = {
     chunks = []
     const stream = canvas.captureStream(60) // 60fps, ajustar según conveniencia
     mediaRecorder = new MediaRecorder(stream, opciones)
-
     mediaRecorder.ondataavailable = e => {
       if (e.data && e.data.size > 0) {
         chunks.push(e.data)
       }
     }
-
     mediaRecorder.start()
     grabando = true
   }
@@ -36,6 +34,5 @@ export function crearGrabadorCanvas(canvas, opciones = {
       mediaRecorder.stop()
     })
   }
-
   return { iniciar, detener }
 }

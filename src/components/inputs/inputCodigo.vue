@@ -23,11 +23,20 @@ function syncScroll(e) {
 
 <template>
   <div class="wrapper">
+
     <div class="numeros" ref="numerosRef" aria-hidden="true">
       <span v-for="line in lines" :key="line">{{ line }}</span>
     </div>
-    <textarea class="input" spellcheck="false" :value="modelValue" :placeholder="placeholder" 
-      @input="onInput" @scroll="syncScroll"></textarea>
+
+    <textarea class="input" spellcheck="false" 
+      :value="modelValue" 
+      :placeholder="placeholder" 
+      @input="onInput"
+      @scroll="syncScroll"
+    >
+    
+    </textarea>
+
   </div>
 </template>
 
@@ -45,7 +54,6 @@ function syncScroll(e) {
   line-height: 1.5;
   color: #d8dade;
 }
-
 .numeros {
   box-sizing: border-box;
   user-select: none;
@@ -58,7 +66,6 @@ function syncScroll(e) {
 }
 .numeros span { display: block; height: 1.5em; }
 .numeros::-webkit-scrollbar { display: none; }
-
 .input {
   box-sizing: border-box;
   overflow-y: auto;

@@ -3,17 +3,8 @@ import { onMounted, defineEmits  } from 'vue'
 import { useBiblioteca } from '../biblioteca.js'
 import { obtenerArchivoPorId } from '../indexed.js'
 
+const { biblioteca, cargarBiblioteca, eliminarCarpeta, eliminarArchivo, cancelarEdicion, confirmarEdicion } = useBiblioteca()
 const emit = defineEmits(['cargarShader'])
-
-const {
-  biblioteca,
-  cargarBiblioteca,
-  eliminarCarpeta,
-  eliminarArchivo,
-  cancelarEdicion,
-  confirmarEdicion
-} = useBiblioteca()
-
 onMounted(cargarBiblioteca)
 
 function eliminarCarpetaConfirmada(carpeta) {

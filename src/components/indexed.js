@@ -12,7 +12,7 @@ const dbPromise = openDB('sealDB', 2, {
         store.createIndex('porNombre', 'nombre', { unique: true })
       }
     }
-
+    
     if (!db.objectStoreNames.contains('archivos')) {
       const archivos = db.createObjectStore('archivos', { keyPath: 'id' })
       archivos.createIndex('porCarpeta', 'carpeta')
@@ -77,7 +77,6 @@ export async function crearArchivo({ carpeta, nombre, codigo }) {
   const id = `${carpeta}/${nombre}`
   const existe = await db.get('archivos', id)
   if (existe) throw new Error('That file already exists in the selected folder')
-
   const archivo = {
     id,
     nombre,
@@ -85,7 +84,6 @@ export async function crearArchivo({ carpeta, nombre, codigo }) {
     codigo,
     creado: Date.now()
   }
-
   await db.add('archivos', archivo)
   return archivo
 }
@@ -104,29 +102,20 @@ export async function eliminarArchivo(id) {
 
 export async function renombrarCarpeta(nombreViejo, nombreNuevo) {
   const db = await dbPromise;
-  // busco la carpeta original por índice
   const carpeta = await db.getFromIndex('carpetas', 'porNombre', nombreViejo);
   if (!carpeta) throw new Error('Folder not found');
-  // chequeo que no exista ya la nueva
   const existe = await db.getFromIndex('carpetas', 'porNombre', nombreNuevo);
   if (existe) throw new Error('A folder with that name already exists');
-
-  // traigo todos los archivos de la carpeta vieja
   const archivos = await obtenerArchivosPorCarpeta(nombreViejo);
-  // inicio tx en ambos object stores
   const tx = db.transaction(['carpetas', 'archivos'], 'readwrite');
   const carpetasStore = tx.objectStore('carpetas');
   const archivosStore  = tx.objectStore('archivos');
-
-  // borro la carpeta vieja y agrego la nueva con el nombre actualizado
   carpetasStore.delete(carpeta.id);
   carpetasStore.add({ 
     ...carpeta, 
     nombre: nombreNuevo, 
     creada: Date.now() 
   });
-
-  // para cada archivo, cambio su id (que es carpeta/nombre) y carpeta
   for (const archivo of archivos) {
     const nuevoId = `${nombreNuevo}/${archivo.nombre}`;
     archivosStore.delete(archivo.id);
@@ -136,7 +125,6 @@ export async function renombrarCarpeta(nombreViejo, nombreNuevo) {
       carpeta: nombreNuevo
     });
   }
-
   await tx.done;
 }
 
@@ -144,11 +132,9 @@ export async function renombrarArchivo(idViejo, nombreNuevo) {
   const db = await dbPromise
   const archivo = await db.get('archivos', idViejo)
   if (!archivo) throw new Error('Folder not found')
-
   const nuevoId = `${archivo.carpeta}/${nombreNuevo}`
   const yaExiste = await db.get('archivos', nuevoId)
   if (yaExiste) throw new Error('A folder with that name already exists')
-
   await db.delete('archivos', idViejo)
   return db.add('archivos', { ...archivo, nombre: nombreNuevo, id: nuevoId })
 }

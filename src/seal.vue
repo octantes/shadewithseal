@@ -7,9 +7,8 @@ import vistaShader from './components/vistas/vistaShader.vue'
 const codigoActual = ref('')
 const reproduciendo = ref(false)
 const grabando = ref(false)
-let grabador = null
-
 const vistaShaderRef = ref(null)
+let grabador = null
 
 function resetear() {
   reproduciendo.value = false
@@ -29,10 +28,10 @@ function toggleGrabacion() {
     grabador = crearGrabadorCanvas(vistaShaderRef.value.canvasRef)
     grabador.iniciar()
     grabando.value = true
-  } else {
+  }
+  else {
     grabador.detener().then(blob => {
       grabando.value = false
-      // descargar el video
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
@@ -50,10 +49,12 @@ function toggleGrabacion() {
 
   <div class="seal">
 
-    <vistaShader ref="vistaShaderRef" :codigo="codigoActual" :reproduciendo="reproduciendo" />
+    <vistaShader ref="vistaShaderRef"
+      :codigo="codigoActual"
+      :reproduciendo="reproduciendo"
+    />
 
-    <vistaBiblioteca
-      v-model:codigo="codigoActual"
+    <vistaBiblioteca v-model:codigo="codigoActual"
       :reproduciendo="reproduciendo"
       :grabando="grabando"
       @reproduccion="reproduciendo = $event"

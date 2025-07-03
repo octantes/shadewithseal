@@ -8,7 +8,7 @@ const props = defineProps({
 
 <template>
   <div class="modalError" v-if="mensaje">
-    <pre >{{ mensaje }}</pre>
+    <pre>{{ mensaje }}</pre>
   </div>
 </template>
 
