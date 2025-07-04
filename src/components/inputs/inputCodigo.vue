@@ -53,18 +53,22 @@ function syncScroll(e) {
   font-size: 1rem;
   line-height: 1.5;
   color: #d8dade;
+  gap: .5rem;
 }
 .numeros {
   box-sizing: border-box;
+  padding-top: 1rem;
   user-select: none;
-  padding: 1rem;
   background: #2b2c2c;
+  width: 2rem;
   color: #aaabac;
-  overflow: hidden auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  text-align: center;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
-.numeros span { display: block; height: 1.5em; }
+.numeros span { display: block; height: 1.5em; line-height: 1.5em; width: 2rem; }
 .numeros::-webkit-scrollbar { display: none; }
 .input {
   box-sizing: border-box;
