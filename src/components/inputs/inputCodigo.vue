@@ -57,7 +57,7 @@ function syncScroll(e) {
 }
 .numeros {
   box-sizing: border-box;
-  padding-top: 1rem;
+  padding: 1rem 0 0 0;
   user-select: none;
   background: #2b2c2c;
   width: 2rem;
@@ -67,9 +67,9 @@ function syncScroll(e) {
   text-align: center;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
 }
 .numeros span { display: block; height: 1.5em; line-height: 1.5em; width: 2rem; }
-.numeros::-webkit-scrollbar { display: none; }
 .input {
   box-sizing: border-box;
   overflow-y: auto;
@@ -83,6 +83,8 @@ function syncScroll(e) {
   color: #d8dade;
   scrollbar-width: none;
   border-radius: 5px;
+  scrollbar-gutter: stable;
+
 }
 input::-webkit-scrollbar { display: none; }
 </style>

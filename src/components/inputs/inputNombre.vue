@@ -17,12 +17,13 @@ function onInput(evento) {
 <style scoped>
 .input {
   width: auto;
-  height: 1rem;
+  height: 4.5rem;
   flex-grow: 1;
   color: #d8dade;
   background-color: #1b1c1c;
   font-size: 1rem;
   padding: 1rem;
+  border-radius: 5px;
 }
 .input:hover { background: #3c3c3c; }
 </style>

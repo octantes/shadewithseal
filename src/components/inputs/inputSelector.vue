@@ -33,13 +33,14 @@ const valor = computed({
 .wrapper { position: relative; display: inline-block; }
 .input {
   width: 100%;
-  min-height: 2rem;
+  min-height: 4.5rem;
   color: #d8dade;
   background-color: #1b1c1c;
   font-size: 1rem;
-  padding: 0.25rem 2rem 0.25rem 0.5rem;
+  padding: 0.25rem 2rem 0.25rem 1rem;
   border: none;
   appearance: none;
+  border-radius: 5px;
 }
 .arrow {
   position: absolute;
