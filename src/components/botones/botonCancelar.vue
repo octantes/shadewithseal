@@ -1,6 +1,5 @@
 <script setup>
 import { XMarkIcon } from '@heroicons/vue/24/solid'
-import { defineEmits } from 'vue'
 const emit = defineEmits(['clickCancelar'])
 </script>
 

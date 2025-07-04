@@ -1,6 +1,4 @@
 <script setup>
-import { defineProps } from 'vue'
-
 const props = defineProps({
   mensaje: { type: String, default: '' }
 })
@@ -24,6 +22,7 @@ const props = defineProps({
   font-size: 1rem;
   white-space: pre-wrap;
   overflow: auto;
+  border-radius: 5px;
 }
 .modalError:hover { background: #1b1c1c; transition: 1s; }
 </style>

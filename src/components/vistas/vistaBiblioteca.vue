@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, defineEmits } from 'vue'
+import { ref } from 'vue'
 import bibliotecaEstructura from '../biblioteca/bibliotecaEstructura.vue'
 import bibliotecaGuardar from '../biblioteca/bibliotecaGuardar.vue'
 import inputCodigo from '../inputs/inputCodigo.vue'
@@ -54,30 +54,25 @@ function reemplazarCodigo(nuevoCodigo) {
 <template>
 
   <div class="columna">
-
-    <div class="columna">
-
+      
       <div class="fila">
-
-        <botonCodigo @clickCodigo="alternarCodigo" />
+        
+        <div class="columnay">
+          <botonCodigo @clickCodigo="alternarCodigo" />
+          <botonGuardar @clickGuardar="alternarBiblioteca" />
+        </div>
 
         <div class="fila" v-if="mostrarCodigo">
           <botonReiniciar @clickReiniciar="emit('resetear')" />
           <botonReproducir :activo="props.reproduciendo" @clickReproducir="alternarReproduccion" />
           <botonGrabar :grabando="props.grabando" @clickGrabar="$emit('clickGrabar')" />
         </div>
-
-      </div>
-
-      <div class="fila">
-
-        <botonGuardar @clickGuardar="alternarBiblioteca" />
-
+  
         <div class="fila" v-if="mostrarEstructura && !tipoActual">
           <botonCarpeta @clickCarpeta="tipoActual = 'carpeta'" />
           <botonArchivo @clickArchivo="tipoActual = 'archivo'" />
         </div>
-
+        
       </div>
 
       <div class="columnax">
@@ -87,8 +82,6 @@ function reemplazarCodigo(nuevoCodigo) {
         <bibliotecaEstructura v-if="mostrarEstructura && !tipoActual" @cargarShader="reemplazarCodigo"/>
   
       </div>
-
-    </div>
 
   </div>
 

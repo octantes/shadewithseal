@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { crearGrabadorCanvas } from './components/recorder.js'
 import vistaBiblioteca from './components/vistas/vistaBiblioteca.vue'
 import vistaShader from './components/vistas/vistaShader.vue'

@@ -1,6 +1,5 @@
 <script setup>
 import { PlayCircleIcon, PauseCircleIcon } from '@heroicons/vue/24/solid'
-import { defineProps, defineEmits } from 'vue'
 const emit = defineEmits(['clickGrabar'])
 const props = defineProps({ grabando: Boolean })
 function manejarClick() {

@@ -1,6 +1,5 @@
 <script setup>
 import { ForwardIcon } from '@heroicons/vue/24/solid'
-import { defineEmits } from 'vue'
 const emit = defineEmits(['clickAvanzar'])
 </script>
 

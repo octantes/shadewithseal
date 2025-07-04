@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
@@ -78,6 +78,7 @@ function syncScroll(e) {
   background: #1b1c1c;
   color: #d8dade;
   scrollbar-width: none;
+  border-radius: 5px;
 }
 input::-webkit-scrollbar { display: none; }
 </style>

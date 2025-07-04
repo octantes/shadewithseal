@@ -1,6 +1,5 @@
 <script setup>
 import { DocumentPlusIcon } from '@heroicons/vue/24/solid'
-import { defineEmits } from 'vue'
 const emit = defineEmits(['clickArchivo'])
 </script>
 

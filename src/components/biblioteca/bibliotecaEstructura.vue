@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, defineEmits  } from 'vue'
+import { onMounted } from 'vue'
 import { useBiblioteca } from '../biblioteca.js'
 import { obtenerArchivoPorId } from '../indexed.js'
 
@@ -85,7 +85,7 @@ async function cargarArchivoConfirmado(carpetaNombre, archivoNombre) {
 </template>
 
 <style scoped>
-.biblioteca { display: flex; flex-direction: column; gap: 1em; padding: 1em; background: #1b1c1c; color: #d8dade; }
+.biblioteca { display: flex; flex-direction: column; gap: 1em; padding: 1em; background: #1b1c1c; color: #d8dade; border-radius: 5px; }
 .objeto { display: flex; gap: 1rem; padding: .5em; cursor: pointer; }
 .objeto:hover { background: #3c3c3c; }
 .objeto input { background: #2b2c2c; color: #d8dade; padding: 0.5em; }

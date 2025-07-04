@@ -1,6 +1,5 @@
 <script setup>
 import { PlayIcon, PauseIcon } from '@heroicons/vue/24/solid'
-import { defineProps, defineEmits } from 'vue'
 const props = defineProps({ activo: Boolean })
 const emit = defineEmits(['clickReproducir'])
 </script>
