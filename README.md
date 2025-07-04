@@ -28,5 +28,5 @@ Pro tip: *save as bookmark for easy access!*
 <p align="center">
   <strong><em>designed with simplicity in mind, to keep you in control</em></strong>
   <br><br>
-  <img src="assets/seal.svg" width="120"/>
+  <img src="assets/seal.svg" width="80"/>
 </p>
