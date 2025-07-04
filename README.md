@@ -18,7 +18,7 @@ All your data stays on your machine without accounts, servers or sync. Just reme
 * **Recording**: Play, pause, restart, record and download the shader to .webm with one click (square aspect ratio).
 * **Local Saving**: Organize your shaders in folders and store them in your browser using indexedDB.
 
-**WIP**: webGL2 support > indexedDB to JSON export >  Canvas overlapping with blending modes > Custom aspect ratios
+**WIP**: webGL2 support > indexedDB to JSON export >  Canvas overlapping & blending modes > Custom aspect ratios
 
 Remember that **your data stays in the browser until you export it!** - back it up regularly if needed.
 
