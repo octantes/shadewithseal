@@ -14,8 +14,8 @@ All your data stays on your machine without accounts, servers or sync. Just reme
 **seal** is stable and functional, aimed at staying minimal: just open the latest html released and start working.
 
 * **Live-coding**: Write GLSL fragment shaders and see results in real time with error logs on top of the canvas.
-* **Rendering**: Simple and minimal rendering loop powered by native webgl. Support for most shadertoy custom variables.
-* **Recording**: Play, pause, restart, record and download the shader as a .webm video with one click (square aspect ratio).
+* **Rendering**: Simple and minimal rendering loop powered by webgl. Support for most shadertoy custom variables.
+* **Recording**: Play, pause, restart, record and download the shader to .webm with one click (square aspect ratio).
 * **Local Saving**: Organize your shaders in folders and store them in your browser using indexedDB.
 
 **WIP**: webGL2 support > indexedDB JSON export > Overlapping multiple shaders with blending modes > Custom aspect ratios
