@@ -46,7 +46,11 @@ function syncScroll(e) {
   min-height: 0;
   box-sizing: border-box;
   display: flex;
-  overflow: hidden;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-height: 0;
+  overflow: hidden auto;
   font-family: monospace;
   width: 100%;
   height: 100%;
@@ -65,8 +69,7 @@ function syncScroll(e) {
   scrollbar-width: none;
   -ms-overflow-style: none;
   text-align: center;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   scrollbar-gutter: stable;
 }
 .numeros span { display: block; height: 1.5em; line-height: 1.5em; width: 2rem; }

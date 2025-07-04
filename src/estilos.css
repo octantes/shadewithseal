@@ -19,7 +19,7 @@
 .columna { display: flex ; flex-direction: column; gap: .5rem; height: 100%; width: 100% }
 .fila { display: flex; flex-direction: row; gap: .5rem}
 .shader { width: 50rem; height: 50rem; padding: 1rem; }
-.columnax { display: flex ; flex-direction: column; gap: .5rem; height: 100%; width: 100%; min-height: 0 }
+.columnax { display: flex; flex: 1 1 auto ; flex-direction: column; gap: .5rem; height: 100%; width: 100%; min-height: 0; overflow: hidden; }
 .columnay { display: flex ; flex-direction: column; gap: .5rem; height: 100%; width: auto }
 
 /* botones */
