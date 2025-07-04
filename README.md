@@ -7,7 +7,7 @@ Built for artists and coders who need a lightweight playground to prototype and 
 
 All your data stays on your machine without accounts, servers or sync. Just remember to export frequently and before deleting browser data.
 
-![screenshot](assets/portada.png)
+![portada](assets/portada.png)
 
 ## Features
 
