@@ -17,7 +17,7 @@ All your data stays on your machine without accounts, servers or sync. Just reme
 * **Rendering**: Simple and minimal rendering loop powered by webgl. Support for most shadertoy custom variables.
 * **Recording**: Play, pause, restart, record and download the shader to .webm with one click (square aspect ratio).
 * **Local Saving**: Organize your shaders in folders and store them in your browser using indexedDB.
-* **Hiper-light**: Compatible with virtually any modern browser, at just ~100KB.
+* **Hiper-light**: Compatible with virtually any modern browser including mobile, at just ~100KB.
 
 **WIP**: webGL2 support > indexedDB to JSON export >  Canvas overlapping & blending modes > Custom aspect ratios
 
